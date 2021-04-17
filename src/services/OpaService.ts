@@ -109,6 +109,7 @@ export class OpaService {
                         });
                         opa.on('exit', () => {
                             if (!isEmpty(rawError)) {
+                                deleteFolderRecursive(temp);
                                 return reject(new Error(`OPA Error: \n${rawError}`));
                             }
                             try {
