@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as os from 'os';
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { spawn } from 'child_process';
 import * as path from 'path';
 import { ExecuteDto } from '../dto/ExecuteDto';
@@ -110,7 +110,7 @@ export class OpaService {
                         opa.on('exit', () => {
                             if (!isEmpty(rawError)) {
                                 deleteFolderRecursive(temp);
-                                return reject(new Error(`OPA Error: \n${rawError}`));
+                                return reject(new BadRequestException('OPA Error', `OPA Error: \n${rawError}`));
                             }
                             try {
                                 deleteFolderRecursive(temp);
@@ -133,7 +133,8 @@ export class OpaService {
                     })
             )
         ).then(
-            (arr: any[]) => arr.reduce((res, val) => res.concat(val), []) as any
+            (arr: any[]) => arr.reduce((res, val) => res.concat(val), []) as any,
+            (err) => new BadRequestException(err.message, `${err.message}: \n${JSON.stringify(err.stack)}`)
         );
     }
 }
