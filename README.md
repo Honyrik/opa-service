@@ -55,7 +55,7 @@ http://localhost:3000/apiDoc
 ## Docker
 ```bash
 docker build -t opa-service:dev .
-docker run --name some-opa-service -p 3000:3000 -d opa-service 
+docker run --name some-opa-service -p 3000:3000 -d opa-service:dev
 ``` 
 ## License
 
